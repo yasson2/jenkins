@@ -3,19 +3,15 @@ pipeline {
   stages {
     stage('Prepare') {
       agent any
-      environment {
-        BUILD_SCRIPTS_GIT = 'https://github.com/yasson2/jenkinstest.git'
-        FILE = 'script.sh'
-      }
       steps {
-        git(url: '${ BUILD_SCRIPTS_GIT }', branch: 'master', credentialsId: '649a6f77-79a7-44ff-8358-4d12356b0b48')
-        fileExists '${FILE}'
+        git(url: '${env.BUILD_SCRIPTS_GIT}', branch: 'master', credentialsId: '649a6f77-79a7-44ff-8358-4d12356b0b48')
+        fileExists 'script.sh'
         echo 'Prepare complete !'
       }
     }
     stage('Deploy') {
       steps {
-        sh '${WORKSPACE}/script.sh'
+        sh '${env.WORKSPACE}/script.sh'
         echo 'Deploy completed !'
       }
     }
@@ -34,6 +30,7 @@ pipeline {
     }
   }
   environment {
+    BUILD_SCRIPTS_GIT = 'https://github.com/yasson2/jenkinstest.git'
     BUILD_SCRIPTS = 'mypipeline'
     BUILD_HOME = '/var/lib/jenkins/workspace'
     FILE = '/tmp/1.txt'
