@@ -11,7 +11,7 @@ pipeline {
     }
     stage('Deploy') {
       steps {
-        sh 'chmod +X script.sh'
+        sh 'touch /tmp/1.txt'
         sh './script.sh'
         echo 'Deploy completed !'
       }
