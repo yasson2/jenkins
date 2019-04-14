@@ -22,14 +22,8 @@ pipeline {
     }
     stage('Clean') {
       steps {
-        cleanWs(cleanWhenAborted: true, cleanWhenFailure: true, cleanWhenNotBuilt: true, cleanWhenSuccess: true, cleanWhenUnstable: true, deleteDirs: true, disableDeferredWipeout: true, cleanupMatrixParent: true)
+        cleanWs()
       }
     }
-  }
-  environment {
-    BUILD_SCRIPTS_GIT = 'https://github.com/yasson2/jenkinstest.git'
-    BUILD_SCRIPTS = 'mypipeline'
-    BUILD_HOME = '/var/lib/jenkins/workspace'
-    FILE = '/tmp/1.txt'
   }
 }
