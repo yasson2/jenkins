@@ -18,11 +18,13 @@ pipeline {
     stage('Test') {
       steps {
         sh '[ -f "/tmp/1.txt" ] && echo "/tmp/1.txt exist"'
+        echo 'FIle exist !'
       }
     }
     stage('Clean') {
       steps {
         cleanWs()
+        sh 'rm -rf /tmp/1.txt'
       }
     }
   }
