@@ -12,7 +12,6 @@ pipeline {
     stage('Deploy') {
       steps {
         sh 'touch /tmp/1.txt'
-        sh './script.sh'
         echo 'Deploy completed !'
       }
     }
