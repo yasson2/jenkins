@@ -4,23 +4,21 @@ pipeline {
     stage('Prepare') {
       agent any
       steps {
-        git(url: '${env.BUILD_SCRIPTS_GIT}', branch: 'master', credentialsId: '649a6f77-79a7-44ff-8358-4d12356b0b48')
+        git(url: 'https://github.com/yasson2/jenkinstest.git', branch: 'master', credentialsId: '649a6f77-79a7-44ff-8358-4d12356b0b48')
         fileExists 'script.sh'
         echo 'Prepare complete !'
       }
     }
     stage('Deploy') {
       steps {
-        sh '${env.WORKSPACE}/script.sh'
+        sh 'chmod +X script.sh'
+        sh './script.sh'
         echo 'Deploy completed !'
       }
     }
     stage('Test') {
-      environment {
-        FILE = '/tmp/1.txt'
-      }
       steps {
-        sh '[ -f ${FILE} ] && echo "${FILE} exist"'
+        sh '[ -f "/tmp/1.txt" ] && echo "/tmp/1.txt exist"'
       }
     }
     stage('Clean') {
