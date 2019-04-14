@@ -4,6 +4,7 @@ pipeline {
     stage('Prepare') {
       agent any
       steps {
+        dir(path: '/tmp/${env.JOB_NAME}-${env.BUILD_NUMBER}')
         git(url: 'https://github.com/yasson2/jenkinstest.git', branch: 'master', credentialsId: '649a6f77-79a7-44ff-8358-4d12356b0b48')
         fileExists 'script.sh'
         echo 'Prepare complete !'
@@ -11,7 +12,8 @@ pipeline {
     }
     stage('Deploy') {
       steps {
-        sh 'touch /tmp/1.txt'
+        sh '''chmod +x script.sh
+./script.sh'''
         echo 'Deploy completed !'
       }
     }
