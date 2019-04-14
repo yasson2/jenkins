@@ -8,7 +8,7 @@ pipeline {
         FILE = 'script.sh'
       }
       steps {
-        git(url: '${BUILD_SCRIPTS_GIT}', branch: 'master', credentialsId: '649a6f77-79a7-44ff-8358-4d12356b0b48')
+        git(url: '${ BUILD_SCRIPTS_GIT }', branch: 'master', credentialsId: '649a6f77-79a7-44ff-8358-4d12356b0b48')
         fileExists '${FILE}'
         echo 'Prepare complete !'
       }
