@@ -3,6 +3,7 @@ version: '3.2'
 services:
 
   wordpress:
+    net: wordpress
     image: wordpress
     restart: always
     ports:
@@ -14,6 +15,7 @@ services:
       WORDPRESS_DB_NAME: wordpress
 
   db:
+    net: wordpress
     image: mysql:5.7
     restart: always
     environment:
