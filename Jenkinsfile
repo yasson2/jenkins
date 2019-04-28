@@ -13,6 +13,21 @@ if ! [ -x "$(command -v mysql)" ]; then
   sudo yum -y install mysql
   exit 0
 fi'''
+        sh '''#install DOCKER
+if ! [ -x "$(command -v docker)" ]; then
+  sudo yum install -y yum-utils \\
+  device-mapper-persistent-data \\
+  lvm2
+  sudo yum-config-manager \\
+    --add-repo \\
+    https://download.docker.com/linux/centos/docker-ce.repo
+
+    sudo yum -y install docker-ce docker-ce-cli containerd.io
+    sudo systemctl start docker
+    sudo systemctl enable docker
+    sudo docker run hello-world
+  exit 0
+fi'''
       }
     }
     stage('Build') {
@@ -21,8 +36,9 @@ fi'''
       }
     }
     stage('deploy') {
+      agent any
       steps {
-        echo 'test'
+        sh 'docker stack deploy -c stack.yml wordpress'
       }
     }
     stage('test') {
