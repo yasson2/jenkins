@@ -32,7 +32,7 @@ fi'''
     }
     stage('Test') {
       steps {
-        sh 'curl http://ec2-35-181-91-136.eu-west-3.compute.amazonaws.com'
+        sh 'wget http://ec2-35-181-91-136.eu-west-3.compute.amazonaws.com'
       }
     }
     stage('Cleaning') {
