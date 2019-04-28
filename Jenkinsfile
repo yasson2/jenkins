@@ -16,9 +16,8 @@ fi'''
         sh '''#install DOCKER
 if ! [ -x "$(command -v docker)" ]; then
   sudo yum install -y docker
-  sudo systemctl start docker
-    sudo systemctl enable docker
-    sudo docker run hello-world
+  sudo service docker start
+  sudo docker run hello-world
   exit 0
 fi'''
       }
