@@ -25,8 +25,8 @@ fi'''
     }
     stage('Build') {
       steps {
-        sh 'docker stack deploy -c stack.yml wordpress'
         fileExists 'stack.yml'
+        sh 'sudo docker stack deploy -c stack.yml wordpress'
       }
     }
     stage('Test') {
