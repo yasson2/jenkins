@@ -37,7 +37,7 @@ fi'''
     }
     stage('Cleaning') {
       steps {
-        sh 'docker stack rm wordpress'
+        sh 'sudo docker stack rm wordpress'
         cleanWs(cleanWhenAborted: true, cleanWhenFailure: true, cleanWhenNotBuilt: true, cleanWhenSuccess: true, cleanWhenUnstable: true, cleanupMatrixParent: true, deleteDirs: true, disableDeferredWipeout: true)
       }
     }
