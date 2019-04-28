@@ -25,27 +25,19 @@ fi'''
     }
     stage('Build') {
       steps {
-        echo 'test'
-      }
-    }
-    stage('deploy') {
-      agent any
-      steps {
         sh 'docker stack deploy -c stack.yml wordpress'
+        fileExists 'stack.yml'
       }
     }
-    stage('test') {
+    stage('Test') {
       steps {
-        echo 'test'
-      }
-    }
-    stage('Repport') {
-      steps {
-        echo 'test'
+        sh 'curl http://ec2-35-181-91-136.eu-west-3.compute.amazonaws.com'
+        sh 'mysql -u exampleuser -pexamplepass'
       }
     }
     stage('Cleaning') {
       steps {
+        sh 'docker stack rm wordpress'
         cleanWs(cleanWhenAborted: true, cleanWhenFailure: true, cleanWhenNotBuilt: true, cleanWhenSuccess: true, cleanWhenUnstable: true, cleanupMatrixParent: true, deleteDirs: true, disableDeferredWipeout: true)
       }
     }
