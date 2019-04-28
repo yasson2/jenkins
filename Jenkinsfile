@@ -27,11 +27,7 @@ fi'''
       steps {
         fileExists 'stack.yml'
         sh 'sudo docker stack deploy -c stack.yml wordpress'
-        waitUntil() {
-          sh '''wget http://ec2-35-181-91-136.eu-west-3.compute.amazonaws.com
-'''
-        }
-
+        sleep 20
       }
     }
     stage('Test') {
