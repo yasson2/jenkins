@@ -4,6 +4,7 @@ pipeline {
     stage('Build') {
       steps {
         fileExists 'stack.yml'
+        sh 'whoami'
         sh 'sudo docker stack deploy -c stack.yml wordpress'
         sleep 20
       }
