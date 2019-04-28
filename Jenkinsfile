@@ -16,6 +16,7 @@ fi'''
         sh '''#install DOCKER
 if ! [ -x "$(command -v docker)" ]; then
   sudo yum install -y docker
+  sudo usermod -a -G docker ec2-user
   sudo service docker start
   sudo docker run hello-world
   exit 0
