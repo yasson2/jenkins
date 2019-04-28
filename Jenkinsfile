@@ -15,5 +15,30 @@ if ! [ -x "$(command -v mysql)" ]; then
 fi'''
       }
     }
+    stage('Build') {
+      steps {
+        echo 'test'
+      }
+    }
+    stage('deploy') {
+      steps {
+        echo 'test'
+      }
+    }
+    stage('test') {
+      steps {
+        echo 'test'
+      }
+    }
+    stage('Repport') {
+      steps {
+        echo 'test'
+      }
+    }
+    stage('Cleaning') {
+      steps {
+        cleanWs(cleanWhenAborted: true, cleanWhenFailure: true, cleanWhenNotBuilt: true, cleanWhenSuccess: true, cleanWhenUnstable: true, cleanupMatrixParent: true, deleteDirs: true, disableDeferredWipeout: true)
+      }
+    }
   }
 }
