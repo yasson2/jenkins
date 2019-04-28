@@ -1,28 +1,6 @@
 pipeline {
   agent any
   stages {
-    stage('Prepare') {
-      steps {
-        sh '''#install WGET
-if ! [ -x "$(command -v wget)" ]; then
-  sudo yum-y install wget
-  exit 0
-fi'''
-        sh '''#install MySQL
-if ! [ -x "$(command -v mysql)" ]; then
-  sudo yum -y install mysql
-  exit 0
-fi'''
-        sh '''#install DOCKER
-if ! [ -x "$(command -v docker)" ]; then
-  sudo yum install -y docker
-  sudo usermod -a -G docker ec2-user
-  sudo service docker start
-  sudo docker run hello-world
-  exit 0
-fi'''
-      }
-    }
     stage('Build') {
       steps {
         fileExists 'stack.yml'
