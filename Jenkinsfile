@@ -33,7 +33,6 @@ fi'''
     stage('Test') {
       steps {
         sh 'curl http://ec2-35-181-91-136.eu-west-3.compute.amazonaws.com'
-        sh 'mysql -u exampleuser -pexamplepass -h ec2-35-181-91-136.eu-west-3.compute.amazonaws.com'
       }
     }
     stage('Cleaning') {
