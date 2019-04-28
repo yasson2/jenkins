@@ -27,7 +27,7 @@ fi'''
       steps {
         fileExists 'stack.yml'
         sh 'sudo docker stack deploy -c stack.yml wordpress'
-        sleep 5
+        sleep 10
       }
     }
     stage('Test') {
