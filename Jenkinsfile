@@ -5,12 +5,12 @@ pipeline {
       steps {
         sh '''#install WGET
 if ! [ -x "$(command -v wget)" ]; then
-  sudo apt -y install wget
+  sudo yum-y install wget
   exit 0
 fi'''
         sh '''#install MySQL
 if ! [ -x "$(command -v mysql)" ]; then
-  sudo apt -y install mysql
+  sudo yum -y install mysql
   exit 0
 fi'''
         sh '''#install DOCKER
