@@ -15,15 +15,8 @@ if ! [ -x "$(command -v mysql)" ]; then
 fi'''
         sh '''#install DOCKER
 if ! [ -x "$(command -v docker)" ]; then
-  sudo yum install -y yum-utils \\
-  device-mapper-persistent-data \\
-  lvm2
-  sudo yum-config-manager \\
-    --add-repo \\
-    https://download.docker.com/linux/centos/docker-ce.repo
-
-    sudo yum -y install docker-ce docker-ce-cli containerd.io
-    sudo systemctl start docker
+  sudo yum install -y docker
+  sudo systemctl start docker
     sudo systemctl enable docker
     sudo docker run hello-world
   exit 0
