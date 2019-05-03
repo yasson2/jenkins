@@ -1,11 +1,10 @@
-version: '3.1'
+version: '3.2'
 
 services:
 
   wordpress:
-    net: wordpress_test
     image: wordpress
-    restart: always
+    #restart: always
     ports:
       - 80:80
     environment:
@@ -15,9 +14,8 @@ services:
       WORDPRESS_DB_NAME: wordpress
 
   db:
-    net: wordpress_test
     image: mysql:5.7
-    restart: always
+    #restart: always
     environment:
       MYSQL_DATABASE: wordpress
       MYSQL_USER: exampleuser
