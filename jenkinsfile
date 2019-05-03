@@ -1,5 +1,5 @@
 pipeline {
-  agent any
+  agent { label 'slaves' }
   environment {
   dockerfile = "stack_wordpress.yml"
   docker_service_name = "wordpress"
