@@ -1,16 +1,29 @@
 pipeline {
   agent any
   stages {
-    stage('Prepare') {
-      agent any
+    stage('Preparation') {
+       //clone the GIT
+       git 'https://github.com/yasson2/jenkins.git'
+       
+       // install docker if not installed
+       sh 'if ! [ -x "$(command -v docker)" ]; then \n sudo yum install -y docker \n exit 0 \n fi'
+    }
+    stage('Build') {
       steps {
-        sh 'mkdir /tmp/$BUILD_TAG'
-        dir(path: "/tmp/$BUILD_TAG") {
-          writeFile(file: 'test', text: 'test', encoding: 'utf-8')
-        }
-
-        git(url: 'https://github.com/yasson2/jenkinstest.git', branch: 'master', credentialsId: '649a6f77-79a7-44ff-8358-4d12356b0b48')
-        fileExists 'script.sh'
-        echo 'Prepare complete !'
+        fileExists 'stack.yml'
+        sh 'sudo docker stack deploy -c stack.yml wordpress'
+        sleep 20
       }
+    }
+    stage('Test') {
+      steps {
+        sh 'wget http://ec2-35-181-91-136.eu-west-3.compute.amazonaws.com'
+      }
+    }
+    stage('Cleaning') {
+      steps {
+        sh 'sudo docker stack rm wordpress'
+      }
+    }
+  }
 }

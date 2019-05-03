@@ -1,0 +1,95 @@
+node {
+  def dockerfile
+  stages {
+    stage('Build') {
+      steps {
+        dockerfile = stack.yml
+        //docker_service_name = wordpress
+
+
+        fileExists '${dockerfile}'
+        sh 'sudo docker stack deploy -c ${dockerfile} wordpress'
+        sleep 20
+      }
+    }
+    stage('Test') {
+      steps {
+        sh 'wget http://ec2-35-181-91-136.eu-west-3.compute.amazonaws.com'
+      }
+    }
+    stage('Cleaning') {
+      steps {
+        sh 'sudo docker stack rm ${docker_service_name}'
+      }
+    }
+  }
+}
+
+
+
+node {
+   def dockerfile
+   stage('Preparation') {
+       //clone the GIT
+       git 'https://github.com/yasson2/jenkins.git'
+       
+       // install docker
+       sh 'if ! [ -x "$(command -v docker)" ]; then \n sudo yum install -y docker \n exit 0 \n fi'
+   }
+   stage('Build') {
+           dockerfile = stack.yml
+      // deploy stack
+      if (isUnix()) {
+         sh "sudo docker stack deploy -c ${dockerfile} wordpress"
+      } else {
+        echo 'OS not unix !'
+      }
+
+   }
+   stage('Test') {
+      sh 'wget http://ec2-35-181-91-136.eu-west-3.compute.amazonaws.com'
+   }
+    stage('Cleaning') {
+      sh 'sudo docker stack rm ${docker_service_name}'
+   }
+}
+
+pipeline {
+  agent any
+  environment {
+  dockerfile = "stack.yml"
+  docker_service_name = "wordpress"
+  wordpress_url = "http://ec2-35-181-91-136.eu-west-3.compute.amazonaws.com"
+  } 
+  stages {
+    stage('Preparation') {
+       //clone the GIT
+       git 'https://github.com/yasson2/jenkins.git'
+       
+       // install docker if not installed
+       sh 'if ! [ -x "$(command -v docker)" ]; then \n sudo yum install -y docker \n exit 0 \n fi'
+    }
+    stage('Build') {
+      steps {
+        //check if the dockerfile is present
+        fileExists 'stack.yml'
+        //install the stack
+        sh "sudo docker stack deploy -c ${dockerfile} ${docker_service_name}"
+        //wait until services are up
+        sleep 20
+        }
+    }
+    stage('Test') {
+      steps {
+        //check if the wordpress is UP
+        sh "wget ${wordpress_url}"
+      }
+    }
+    stage('Cleaning') {
+      steps {
+        //remove the stack
+        sh "sudo docker stack rm ${docker_service_name}"
+      }
+    }
+  }
+}

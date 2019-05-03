@@ -1,0 +1,18 @@
+sudo wget -O /etc/yum.repos.d/jenkins.repo http://pkg.jenkins-ci.org/redhat/jenkins.repo
+sudo rpm --import https://jenkins-ci.org/redhat/jenkins-ci.org.key
+
+sudo yum -y upgrade && sudo yum -y install jenkins java-1.8.0-openjdk
+/usr/sbin/alternatives --config java
+
+sudo service jenkins start
+sudo chkconfig jenkins on
+
+
+
+
+###ON master
+vim /etc/sysconfig/jenkins
+$JENKINS_USER="ec2-user"
+chown -R ec2-user:ec2-user /var/lib/jenkins
+chown -R ec2-user:ec2-user /var/cache/jenkins
+chown -R ec2-user:ec2-user /var/log/jenkins
