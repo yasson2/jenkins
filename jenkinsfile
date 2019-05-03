@@ -1,28 +1,49 @@
 pipeline {
   agent any
-  stages {
-    stage('Preparation') {
-       //clone the GIT
-       git 'https://github.com/yasson2/jenkins.git'
-       
-       // install docker if not installed
-       sh 'if ! [ -x "$(command -v docker)" ]; then \n sudo yum install -y docker \n exit 0 \n fi'
-    }
-    stage('Build') {
-      steps {
-        fileExists 'stack.yml'
-        sh 'sudo docker stack deploy -c stack.yml wordpress'
-        sleep 20
+  environment {
+  dockerfile = "stack_wordpress.yml"
+  docker_service_name = "wordpress"
+  wordpress_url = "http://ec2-35-181-91-136.eu-west-3.compute.amazonaws.com"
+  }
+    stages {
+  stage('Preparation') {
+    steps {
+      //clone the GIT
+      git 'https://github.com/yasson2/jenkins.git'  
+      script {
+        if (env.NODE_LABELS == 'salve01 slaves') {
+          // install docker if not installed
+          sh 'if ! [ -x "$(command -v docker)" ]; then \n sudo yum install -y docker \n exit 0 \n fi'
+
+          // start docker swarm cluster
+          sh 'sudo docker swarm join --token SWMTKN-1-4qbdc9k5vmokd04b4cnn1j0fyp2asp05pqgz8z3sa7il0d78bm-8m814wvf521gfoyhfdfl3gng0 172.31.44.61:2377'
+          }
+          else{
+            echo "${env.NODE_LABELS}"
+          }
       }
     }
-    stage('Test') {
-      steps {
-        sh 'wget http://ec2-35-181-91-136.eu-west-3.compute.amazonaws.com'
+  }
+  stage('Build') {
+    steps {
+      //check if the dockerfile is present
+      fileExists 'stack.yml'
+      //install the stack
+      sh "sudo docker stack deploy -c ${dockerfile} ${docker_service_name}"
+      //wait until services are up
+      sleep 20
       }
     }
+  stage('Test') {
+    steps {
+      //check if the wordpress is UP
+      sh "curl ${wordpress_url}"
+    }
+  }
     stage('Cleaning') {
       steps {
-        sh 'sudo docker stack rm wordpress'
+        //remove the stack
+        sh "sudo docker stack rm ${docker_service_name}"
       }
     }
   }

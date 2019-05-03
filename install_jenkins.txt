@@ -12,7 +12,9 @@ sudo chkconfig jenkins on
 
 ###ON master
 vim /etc/sysconfig/jenkins
-$JENKINS_USER="ec2-user"
-chown -R ec2-user:ec2-user /var/lib/jenkins
-chown -R ec2-user:ec2-user /var/cache/jenkins
-chown -R ec2-user:ec2-user /var/log/jenkins
+$JENKINS_USER="jenkins"
+chown -R jenkins:jenkins /var/lib/jenkins
+chown -R jenkins:jenkins /var/cache/jenkins
+chown -R jenkins:jenkins /var/log/jenkins
+service jenkins restart
+ps -ef | grep jenkins
